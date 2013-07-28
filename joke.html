@@ -25,15 +25,33 @@
 			}
 						
 			var listen = function(){
-				//$('#iframe').attr('src', getFinalUrl());
-				document.getElementById("iframe").src = getFinalUrl();
+				$('.source').attr('src', getFinalUrl());
 				$textarea.focus();
-						
+				
+				if(navigator.userAgent.indexOf('Chrome') > -1){
+					var song = $('#player')[0];
+					song.load();
+					song.play();
+				}		
 				if($('#clear').is(':checked'))	
 					$textarea.val('');
 			};			
+			
+			var addPlayer = function(){
+				var ffPlayer = '<embed width="1px" height="1px" name="plugin" style="visibility:hidden;" class="source" src="" type="audio/mpeg">';
+				var chromePlayer = '<audio controls autoplay name="media" id="player" style="visibility:hidden;"><source src="" class="source" type="audio/mpeg"></video>';
+
+				if(navigator.userAgent.indexOf('Firefox') > -1)
+					$('.container').append(ffPlayer);
+				else if(navigator.userAgent.indexOf('Chrome') > -1)
+					$('.container').append(chromePlayer);
+				else{
+					alert('Use Firefox or Chrome... Tnx!')
+				}
+			};
 		
 			$(function(){
+				addPlayer();
 				$('#listen').click(listen);
 				$('#text').keypress(function(e){
 					if (e.keyCode == 13)
@@ -75,10 +93,9 @@
 			<br/>
 			<div>
 			 	<label>
-			    	<input type="checkbox" checked="checked" id="clear"> Clear text after listen
+			    	<input type="checkbox" checked="checked" id="clear"> Clean text after listen
 			    </label>
 			</div>
 		</div>
-		<iframe id="iframe" style="width:1px; height:1px;border:none;">
 	</body>
 </html>
