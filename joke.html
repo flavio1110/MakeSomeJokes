@@ -12,9 +12,10 @@
 			var clientId = '837050751313';
 			var apiKey = 'AIzaSyAdjHPT5Pb7Nu56WJ_nlrMGOAgUAtKjiPM';		
 			var urlBase = 'http://translate.google.com/translate_tts?';
+			var $textarea = null;
 			
 			var getFinalUrl = function(){
-				var $textarea = $('#text');
+				$textarea = $('#text');
 				var language = $(':radio[name=language]:checked').val();				
 				var query = $textarea.val();
 				
@@ -26,40 +27,13 @@
 				return finalUrl;
 			}
 						
-			var listen = function(){				
-				
+			var listen = function(){
 				$('#iframe').attr('src', getFinalUrl());
 				$textarea.focus();
 						
 				if($('#clear').is(':checked'))	
 					$textarea.val('');
-			};
-			
-			var makeShort = function() 
-			{
-			   var longUrl= getFinalUrl();
-			    var request = gapi.client.urlshortener.url.insert({
-			      'resource': {
-			      'longUrl': longUrl
-			    }
-			    });
-			    request.execute(function(response) 
-			    {
-
-			        if(response.id != null)
-			        {
-			            str ="<b>Long URL:</b>"+longUrl+"<br>";
-			            str +="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
-			            document.getElementById("output").innerHTML = str;
-			        }
-			        else
-			        {
-			            alert("error: creating short url \n"+ response.error);
-			        }
-
-			    });
-			 }
-			
+			};			
 		
 			$(function(){			
 				gapi.client.setApiKey('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
@@ -86,8 +60,8 @@
 			<br/>	
 			<div>
 			 	<label> Listen in...
-					<input type="radio" checked="checked" value="en" name="language" id="clear"> English
-			    	<input type="radio" value="pt" name="language" id="clear"> Portuguese
+					<input type="radio" checked="checked" value="en" name="language"> English
+			    	<input type="radio" value="pt" name="language"> Portuguese
 
 			    </label>
 			</div>
