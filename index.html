@@ -25,16 +25,10 @@
 			}
 						
 			var listen = function(){
-				$('.source').attr('src', getFinalUrl());
+				//$('.source').attr('src', getFinalUrl());
+				document.getElementById("iframe").src = getFinalUrl();
 				$textarea.focus();
-				
-				if(navigator.userAgent.indexOf('Chrome') > -1){
-					var song = $('#player')[0];
-					song.load();
-					song.play();
-				}		
-				if($('#clear').is(':checked'))	
-					$textarea.val('');
+			
 			};			
 			
 			var addPlayer = function(){
@@ -51,7 +45,6 @@
 			};
 		
 			$(function(){
-				addPlayer();
 				$('#listen').click(listen);
 				$('#text').keypress(function(e){
 					if (e.keyCode == 13)
@@ -94,6 +87,8 @@
 			    	<input type="checkbox" checked="checked" id="clear"> Clean text after listen
 			    </label>
 			</div>
+			
+			<iframe id="iframe" style="width:1px; height:1px;border:none;">
 		</div>
 	</body>
 </html>
