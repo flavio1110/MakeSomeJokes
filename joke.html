@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset='utf-8' />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+		<script src="https://apis.google.com/js/client.js"> </script>
+		<link href="http://twitter.github.io/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+		
+		<title>Do some jokes with google translator</title>
+		
+		<script>
+			var clientId = '837050751313';
+			var apiKey = 'AIzaSyAdjHPT5Pb7Nu56WJ_nlrMGOAgUAtKjiPM';		
+			var urlBase = 'http://translate.google.com/translate_tts?';
+			
+			var getFinalUrl = function(){
+				var $textarea = $('#text');
+				var language = $(':radio[name=language]:checked').val();				
+				var query = $textarea.val();
+				
+				if(query.length == 0) return;
+				
+				query = query.replace(' ', '+');				
+				var finalUrl = urlBase + 'tl='+ language +'&q=' + query;
+
+				return finalUrl;
+			}
+						
+			var listen = function(){				
+				
+				$('#iframe').attr('src', getFinalUrl());
+				$textarea.focus();
+						
+				if($('#clear').is(':checked'))	
+					$textarea.val('');
+			};
+			
+			var makeShort = function() 
+			{
+			   var longUrl= getFinalUrl();
+			    var request = gapi.client.urlshortener.url.insert({
+			      'resource': {
+			      'longUrl': longUrl
+			    }
+			    });
+			    request.execute(function(response) 
+			    {
+
+			        if(response.id != null)
+			        {
+			            str ="<b>Long URL:</b>"+longUrl+"<br>";
+			            str +="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+			            document.getElementById("output").innerHTML = str;
+			        }
+			        else
+			        {
+			            alert("error: creating short url \n"+ response.error);
+			        }
+
+			    });
+			 }
+			
+		
+			$(function(){			
+				gapi.client.setApiKey('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+				gapi.client.load('urlshortener', 'v1');
+				
+				$('#listen').click(listen);
+				$('#text').keypress(function(e){
+					if (e.keyCode == 13)
+						listen();				
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container text-center">
+			<h1>Make some jokes!!! beta</h1>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Type something and click and Listen or hint [enter]" id="text" value=""/>
+			</div>
+			
+			<input type="button" class="btn btn-primary" value=" Listen " id="listen">
+			
+			<br/>
+			<br/>	
+			<div>
+			 	<label> Listen in...
+					<input type="radio" checked="checked" value="en" name="language" id="clear"> English
+			    	<input type="radio" value="pt" name="language" id="clear"> Portuguese
+
+			    </label>
+			</div>
+			<br/>
+			<div>
+			 	<label>
+			    	<input type="checkbox" checked="checked" id="clear"> Clear text after listen
+			    </label>
+			</div>
+		</div>
+		<iframe id="iframe" style="width:1px; height:1px;border:none;">
+	</body>
+</html>
