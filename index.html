@@ -28,6 +28,9 @@
 				//$('.source').attr('src', getFinalUrl());
 				document.getElementById("iframe").src = getFinalUrl();
 				$textarea.focus();
+				
+				if($('#clear').is(':checked'))  
+                                    $textarea.val('');
 			
 			};			
 			
